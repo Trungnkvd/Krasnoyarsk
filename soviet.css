@@ -1,0 +1,46 @@
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Search } from "lucide-react";
+
+export default function WikiHome() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const articles = [
+    { title: "Việt Minh trong TNO", link: "/articles/viet-minh" },
+    { title: "Lịch sử Việt Nam trong TNO", link: "/articles/vietnam-history" },
+  ];
+
+  const filteredArticles = articles.filter((article) =>
+    article.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-4">Wiki TNO Clone</h1>
+      <div className="flex gap-2 mb-6">
+        <Input
+          placeholder="Tìm kiếm bài viết..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <Button><Search /></Button>
+      </div>
+      <div className="grid gap-4">
+        {filteredArticles.length > 0 ? (
+          filteredArticles.map((article, index) => (
+            <Card key={index}>
+              <CardContent>
+                <a href={article.link} className="text-blue-500 hover:underline">
+                  {article.title}
+                </a>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <p>Không tìm thấy bài viết nào.</p>
+        )}
+      </div>
+    </div>
+  );
+}
